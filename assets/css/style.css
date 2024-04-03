@@ -1340,3 +1340,7 @@ section {
   font-weight: bold;
   display: block; /* Bağlantıların blok düzenini kullanması için */
 }
+
+.nokta {
+  color: red; /* Noktanın rengini buradan değiştirebilirsiniz */
+}
