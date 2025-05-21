@@ -1,315 +1,773 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Moodify AI</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .container {
-      background: rgba(255,255,255,0.1);
-      border-radius: 15px;
-      padding: 30px;
-      max-width: 480px;
-      width: 100%;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      text-align: center;
-    }
-    h1 {
-      margin-bottom: 1rem;
-      font-weight: 700;
-      font-size: 2rem;
-      letter-spacing: 1.5px;
-    }
-    textarea {
-      width: 90%;
-      height: 120px;
-      padding: 15px;
-      border-radius: 10px;
-      border: none;
-      resize: none;
-      font-size: 1rem;
-      font-family: 'Poppins', sans-serif;
-      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.3);
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      margin-bottom: 20px;
-      transition: background 0.3s ease;
-    }
-    textarea:focus {
-      outline: none;
-      background: rgba(255,255,255,0.35);
-    }
-    button {
-      background: #ff6f91;
-      border: none;
-      border-radius: 30px;
-      padding: 12px 30px;
-      color: white;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 6px 12px rgba(255,111,145,0.6);
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #ff488f;
-    }
-    .result {
-      margin-top: 25px;
-      font-size: 1.15rem;
-      background: rgba(255,255,255,0.15);
-      padding: 20px;
-      border-radius: 12px;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-    .link {
-      margin-top: 15px;
-      display: inline-block;
-      font-weight: 700;
-      color: #ffca3a;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    .link:hover {
-      color: #ffd95a;
-    }
-    footer {
-      font-size: 0.85rem;
-      margin-top: 850px;
-      color: #ddd;
-      text-align: center;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Yigit Can Sayar</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+  <link href="assets/css/style.css" rel="stylesheet">
+
+ 
 </head>
+
 <body>
-  <div class="container" role="main">
-    <h1>Moodify AI</h1>
-    <label for="mood-input" style="display:none;">Duygu Metni</label>
-    <textarea id="mood-input" placeholder="Bugün nasıl hissediyorsun? Duygularını yaz..." aria-label="Duygu metni"></textarea>
-    <button id="submit-btn" aria-live="polite">Müzik Listesini Bul</button>
-    <div class="result" id="result" aria-live="polite" style="display:none;"></div>
-  </div>
-  <footer>© 2025 Moodify AI</footer>
-  <script>
-    const submitBtn = document.getElementById('submit-btn');
-    const moodInput = document.getElementById('mood-input');
-    const resultDiv = document.getElementById('result');
 
-    
-    const playlists = {
-      happy: [
-        { name: "Enerjik ve Mutlu Playlist 1", url: "https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC" },
-        { name: "Enerjik ve Mutlu Playlist 2", url: "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj" },
-        { name: "Enerjik ve Mutlu Playlist 3", url: "https://open.spotify.com/playlist/37i9dQZF1DX4dyzvuaRJ0n" },
-        { name: "Enerjik ve Mutlu Playlist 4", url: "https://www.youtube.com/playlist?list=PLDcnymzs18LX5MrZt8es5FQ7Xw3Am-1c_" },
-        { name: "Enerjik ve Mutlu Playlist 5", url: "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" },
-        { name: "Enerjik ve Mutlu Playlist 6", url: "https://www.youtube.com/playlist?list=PL2BCXjNnEwg9uXaW0mrY1USdc-9rgpJUF" },
-        { name: "Enerjik ve Mutlu Playlist 7", url: "https://open.spotify.com/playlist/37i9dQZF1DWUZ5bk6qqDSy" },
-        { name: "Enerjik ve Mutlu Playlist 8", url: "https://www.youtube.com/playlist?list=PLS9D4C7_jRhKPqreYZ31Iq2KliQLJzJBE" },
-        { name: "Enerjik ve Mutlu Playlist 9", url: "https://open.spotify.com/playlist/37i9dQZF1DX4PBoi6xPvM6" },
-        { name: "Enerjik ve Mutlu Playlist 10", url: "https://www.youtube.com/playlist?list=PL0lO_mIqDDFWxyiE0aOfqYFNYSEbJXtzH" },
-        { name: "Enerjik ve Mutlu Playlist 11", url: "https://open.spotify.com/playlist/37i9dQZF1DX6GwdWRQMQpq" },
-        { name: "Enerjik ve Mutlu Playlist 12", url: "https://www.youtube.com/playlist?list=PLMC9KNkIncKtsacKpgMb0CVq7yhJvnGiF" },
-        { name: "Enerjik ve Mutlu Playlist 13", url: "https://open.spotify.com/playlist/37i9dQZF1DX1rVvRgjX59F" },
-        { name: "Enerjik ve Mutlu Playlist 14", url: "https://www.youtube.com/playlist?list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI" },
-        { name: "Enerjik ve Mutlu Playlist 15", url: "https://open.spotify.com/playlist/37i9dQZF1DWYcDQ1hSjOpY" },
-        { name: "Enerjik ve Mutlu Playlist 16", url: "https://www.youtube.com/playlist?list=PLm_8cmoeLF9BMa5IxdAD8KZz05JZykTyf" },
-        { name: "Enerjik ve Mutlu Playlist 17", url: "https://open.spotify.com/playlist/37i9dQZF1DX8wtrT0Cli5W" },
-        { name: "Enerjik ve Mutlu Playlist 18", url: "https://www.youtube.com/playlist?list=PLWwq2qFrcZLwtcXVL43Vy6KJS7MyOYn-A" },
-        { name: "Enerjik ve Mutlu Playlist 19", url: "https://open.spotify.com/playlist/37i9dQZF1DWTwnEm1IYyoj" },
-        { name: "Enerjik ve Mutlu Playlist 20", url: "https://www.youtube.com/playlist?list=PL5vYcuAuEXj0WZqphmlDoETL-kj_gMuHs" }
-      ],
-      sad: [
-        { name: "Huzurlu ve Duygusal Playlist 1", url: "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj" },
-        { name: "Huzurlu ve Duygusal Playlist 2", url: "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1" },
-        { name: "Huzurlu ve Duygusal Playlist 3", url: "https://www.youtube.com/playlist?list=PLkfq5FnEYpS3IMGWqv-7c-ELBvaLFMp1b" },
-        { name: "Huzurlu ve Duygusal Playlist 4", url: "https://open.spotify.com/playlist/37i9dQZF1DX3YSRoSdA634" },
-        { name: "Huzurlu ve Duygusal Playlist 5", url: "https://www.youtube.com/playlist?list=PL4o29bINVT4EG_y-k5jGoOu3-Am8Nvi10" },
-        { name: "Huzurlu ve Duygusal Playlist 6", url: "https://open.spotify.com/playlist/37i9dQZF1DWVrtsSlLKzro" },
-        { name: "Huzurlu ve Duygusal Playlist 7", url: "https://www.youtube.com/playlist?list=PLxIGqEfq58NpRJP0BYh3oisyFiGzOvuA4" },
-        { name: "Huzurlu ve Duygusal Playlist 8", url: "https://open.spotify.com/playlist/37i9dQZF1DX7KNKjOK0o75" },
-        { name: "Huzurlu ve Duygusal Playlist 9", url: "https://www.youtube.com/playlist?list=PLPZ3qBq7JnBYF-SCwCWrkzep-MyjrfaEr" },
-        { name: "Huzurlu ve Duygusal Playlist 10", url: "https://open.spotify.com/playlist/37i9dQZF1DX7KNKjOK0o75" },
-        { name: "Huzurlu ve Duygusal Playlist 11", url: "https://www.youtube.com/playlist?list=PL3oW2tjiIxvTL3gYsZ6i61u3wjaUyypZ0" },
-        { name: "Huzurlu ve Duygusal Playlist 12", url: "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1" },
-        { name: "Huzurlu ve Duygusal Playlist 13", url: "https://www.youtube.com/playlist?list=PLvDGT4jwfYdzDq0P_4OKUKJa8Ng8JE0Tw" },
-        { name: "Huzurlu ve Duygusal Playlist 14", url: "https://open.spotify.com/playlist/37i9dQZF1DX7cfEEL2dS0c" },
-        { name: "Huzurlu ve Duygusal Playlist 15", url: "https://www.youtube.com/playlist?list=PL4QNnORK2lks8ArztHTwowOa52Ig6RixH" },
-        { name: "Huzurlu ve Duygusal Playlist 16", url: "https://open.spotify.com/playlist/37i9dQZF1DX5192T9TxTwT" },
-        { name: "Huzurlu ve Duygusal Playlist 17", url: "https://www.youtube.com/playlist?list=PL6_rZM2m2cjv4hDQuuIcVVulg_AUhz5MK" },
-        { name: "Huzurlu ve Duygusal Playlist 18", url: "https://open.spotify.com/playlist/37i9dQZF1DWTwnEm1IYyoj" },
-        { name: "Huzurlu ve Duygusal Playlist 19", url: "https://www.youtube.com/playlist?list=PLmcgD-NfVj7c-IvAAQzl5gwtJ2Jp5GNxq" },
-        { name: "Huzurlu ve Duygusal Playlist 20", url: "https://open.spotify.com/playlist/37i9dQZF1DX0Yxoavh5qJV" }
-      ],
-      calm: [
-        { name: "Rahatlatıcı Chill Playlist 1", url: "https://open.spotify.com/playlist/37i9dQZF1DX889U0CL85jj" },
-        { name: "Rahatlatıcı Chill Playlist 2", url: "https://www.youtube.com/playlist?list=PLw-VjHDlEOgtQdAh_B6iTORhYdTfv4MMw" },
-        { name: "Rahatlatıcı Chill Playlist 3", url: "https://open.spotify.com/playlist/37i9dQZF1DX1g0iEXLFycr" },
-        { name: "Rahatlatıcı Chill Playlist 4", url: "https://www.youtube.com/playlist?list=PL1qDAqBc5nzXxGvo9pAx9C93PXAhO0ESd" },
-        { name: "Rahatlatıcı Chill Playlist 5", url: "https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO" },
-        { name: "Rahatlatıcı Chill Playlist 6", url: "https://www.youtube.com/playlist?list=PL643BBD7E48A0B7CB" },
-        { name: "Rahatlatıcı Chill Playlist 7", url: "https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT" },
-        { name: "Rahatlatıcı Chill Playlist 8", url: "https://www.youtube.com/playlist?list=PLH1qWzdK7E2wcvBcn7c9_KjT-wA2TEo04" },
-        { name: "Rahatlatıcı Chill Playlist 9", url: "https://open.spotify.com/playlist/37i9dQZF1DXcEULvA9l3Wh" },
-        { name: "Rahatlatıcı Chill Playlist 10", url: "https://www.youtube.com/playlist?list=PLhdbIwCCqaMFjYk1EgUVvyuWXbvRiwvej" },
-        { name: "Rahatlatıcı Chill Playlist 11", url: "https://open.spotify.com/playlist/37i9dQZF1DX889U0CL85jj" },
-        { name: "Rahatlatıcı Chill Playlist 12", url: "https://www.youtube.com/playlist?list=PLm3om6b4-Rk2bT5WgXmuwyR1-hClIv13s" },
-        { name: "Rahatlatıcı Chill Playlist 13", url: "https://open.spotify.com/playlist/37i9dQZF1DX1g0iEXLFycr" },
-        { name: "Rahatlatıcı Chill Playlist 14", url: "https://www.youtube.com/playlist?list=PL955A9060BC1B3AE4" },
-        { name: "Rahatlatıcı Chill Playlist 15", url: "https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO" },
-        { name: "Rahatlatıcı Chill Playlist 16", url: "https://www.youtube.com/playlist?list=PLm5FqiTCHwRhL9Owzn2v9z8uuxHNGqYlk" },
-        { name: "Rahatlatıcı Chill Playlist 17", url: "https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT" },
-        { name: "Rahatlatıcı Chill Playlist 18", url: "https://www.youtube.com/playlist?list=PLRhFZ9VLQP8M_GNCyJG6RQAANEIapGJ_s" },
-        { name: "Rahatlatıcı Chill Playlist 19", url: "https://open.spotify.com/playlist/37i9dQZF1DXcEULvA9l3Wh" },
-        { name: "Rahatlatıcı Chill Playlist 20", url: "https://www.youtube.com/playlist?list=PLMC9KNkIncJobsxUpJEGv_r6SbsUzLcOm" }
-      ],
-      energetic: [
-        { name: "Yüksek Enerji Playlist 1", url: "https://www.youtube.com/playlist?list=PLFgquLnL59akA2PflFpeQG9L01VFg90wS" },
-        { name: "Yüksek Enerji Playlist 2", url: "https://open.spotify.com/playlist/37i9dQZF1DX70RN3TfWWJh" },
-        { name: "Yüksek Enerji Playlist 3", url: "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj" },
-        { name: "Yüksek Enerji Playlist 4", url: "https://open.spotify.com/playlist/37i9dQZF1DX8FmtUgmx0cf" },
-        { name: "Yüksek Enerji Playlist 5", url: "https://www.youtube.com/playlist?list=PLsRNoUx8w3rO3q9pnfuXkz97ozFyL3Z2s" },
-        { name: "Yüksek Enerji Playlist 6", url: "https://open.spotify.com/playlist/37i9dQZF1DWYBO1MoTDhZI" },
-        { name: "Yüksek Enerji Playlist 7", url: "https://www.youtube.com/playlist?list=PLcb9l5XDJ5tf_UhyiBUaOG39K3e_4fcGZ" },
-        { name: "Yüksek Enerji Playlist 8", url: "https://open.spotify.com/playlist/37i9dQZF1DWUQScBTGDY19" },
-        { name: "Yüksek Enerji Playlist 9", url: "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj" },
-        { name: "Yüksek Enerji Playlist 10", url: "https://open.spotify.com/playlist/37i9dQZF1DX70RN3TfWWJh" },
-        { name: "Yüksek Enerji Playlist 11", url: "https://www.youtube.com/playlist?list=PLuGYoyAaN3bgixWsc0VxcQ7RlUEqS_JfV" },
-        { name: "Yüksek Enerji Playlist 12", url: "https://open.spotify.com/playlist/37i9dQZF1DWUvQoIOFMFUT" },
-        { name: "Yüksek Enerji Playlist 13", url: "https://www.youtube.com/playlist?list=PLvDGT4jwfYdzDq0P_4OKUKJa8Ng8JE0Tw" },
-        { name: "Yüksek Enerji Playlist 14", url: "https://open.spotify.com/playlist/37i9dQZF1DX0BcQWzuB7ZO" },
-        { name: "Yüksek Enerji Playlist 15", url: "https://www.youtube.com/playlist?list=PLnSn1xmOJd2I6kd6W-AefDGJkIwZcL_oQ" },
-        { name: "Yüksek Enerji Playlist 16", url: "https://open.spotify.com/playlist/37i9dQZF1DX8uebhn9wzrS" },
-        { name: "Yüksek Enerji Playlist 17", url: "https://www.youtube.com/playlist?list=PLjiK6L_CwmjS814ix5fJZVJR4oaTXe0pB" },
-        { name: "Yüksek Enerji Playlist 18", url: "https://open.spotify.com/playlist/37i9dQZF1DX1M2HVMnR2tk" },
-        { name: "Yüksek Enerji Playlist 19", url: "https://www.youtube.com/playlist?list=PLKqptEvU09pzCpXgPA6iEBZ-NXJYyHpay" },
-        { name: "Yüksek Enerji Playlist 20", url: "https://open.spotify.com/playlist/37i9dQZF1DX97dqPaIYfZ4" }
-      ],
-      romantic: [
-        { name: "Romantik Seçmeler Playlist 1", url: "https://open.spotify.com/playlist/37i9dQZF1DX50QitC6Oqtn" },
-        { name: "Romantik Seçmeler Playlist 2", url: "https://www.youtube.com/playlist?list=PLMC9KNkIncKtsacKpgMb0CVq7yhJvnGiF" },
-        { name: "Romantik Seçmeler Playlist 3", url: "https://open.spotify.com/playlist/37i9dQZF1DX7YCknf2jT6s" },
-        { name: "Romantik Seçmeler Playlist 4", url: "https://www.youtube.com/playlist?list=PL55539F157AD1827C" },
-        { name: "Romantik Seçmeler Playlist 5", url: "https://open.spotify.com/playlist/37i9dQZF1DX0MLFaUdXnjA" },
-        { name: "Romantik Seçmeler Playlist 6", url: "https://www.youtube.com/playlist?list=PL600575E54A7DA734" },
-        { name: "Romantik Seçmeler Playlist 7", url: "https://open.spotify.com/playlist/37i9dQZF1DX7KNKjOK0o75" },
-        { name: "Romantik Seçmeler Playlist 8", url: "https://www.youtube.com/playlist?list=PL4o29bINVTKya8V0nd2Rpo_-N46OHJfzO" },
-        { name: "Romantik Seçmeler Playlist 9", url: "https://open.spotify.com/playlist/37i9dQZF1DX5Ejj0EkURtP" },
-        { name: "Romantik Seçmeler Playlist 10", url: "https://www.youtube.com/playlist?list=PLyytrONpsBT-yrSuO1F_amMeHYeQlmCHK" },
-        { name: "Romantik Seçmeler Playlist 11", url: "https://open.spotify.com/playlist/37i9dQZF1DX6MIt04c8Us0" },
-        { name: "Romantik Seçmeler Playlist 12", url: "https://www.youtube.com/playlist?list=PLn6dF34MtODEU3JbD7rH_fv9Q4GjFYwio" },
-        { name: "Romantik Seçmeler Playlist 13", url: "https://open.spotify.com/playlist/37i9dQZF1DX4dyzvuaRJ0n" },
-        { name: "Romantik Seçmeler Playlist 14", url: "https://www.youtube.com/playlist?list=PL114A6E941365D4AE" },
-        { name: "Romantik Seçmeler Playlist 15", url: "https://open.spotify.com/playlist/37i9dQZF1DWYBO1MoTDhZI" },
-        { name: "Romantik Seçmeler Playlist 16", url: "https://www.youtube.com/playlist?list=PLu3EGBSKEqrQys9WfLIlvP6-VUrLFwIpq" },
-        { name: "Romantik Seçmeler Playlist 17", url: "https://open.spotify.com/playlist/37i9dQZF1DX1rVvRgjX59F" },
-        { name: "Romantik Seçmeler Playlist 18", url: "https://www.youtube.com/playlist?list=PLMQxxj8q17ij77_ExeQ61iyzKVnIuJdf4" },
-        { name: "Romantik Seçmeler Playlist 19", url: "https://open.spotify.com/playlist/37i9dQZF1DX5192T9TxTwT" },
-        { name: "Romantik Seçmeler Playlist 20", url: "https://www.youtube.com/playlist?list=PL7F8FB7A041F9D078" }
-      ],
-      angry: [
-        { name: "Enerjik ve Asi Playlist 1", url: "https://www.youtube.com/playlist?list=PLsRNoUx8w3rO3q9pnfuXkz97ozFyL3Z2s" },
-        { name: "Enerjik ve Asi Playlist 2", url: "https://open.spotify.com/playlist/37i9dQZF1DX0Uk2DYpnop0" },
-        { name: "Enerjik ve Asi Playlist 3", url: "https://www.youtube.com/playlist?list=PLxIGqEfq58NpRJP0BYh3oisyFiGzOvuA4" },
-        { name: "Enerjik ve Asi Playlist 4", url: "https://open.spotify.com/playlist/37i9dQZF1DX4fpCWaHOned" },
-        { name: "Enerjik ve Asi Playlist 5", url: "https://www.youtube.com/playlist?list=PLc7zglT3GhrXHTa7FK1a_bTxJZ7dPnrDl" },
-        { name: "Enerjik ve Asi Playlist 6", url: "https://open.spotify.com/playlist/37i9dQZF1DWXbttAJcbphz" },
-        { name: "Enerjik ve Asi Playlist 7", url: "https://www.youtube.com/playlist?list=PLz1R52IqMCHlhjAJ4Nve0Qk7TbLIzVxUX" },
-        { name: "Enerjik ve Asi Playlist 8", url: "https://open.spotify.com/playlist/37i9dQZF1DX0buQ7GblFXe" },
-        { name: "Enerjik ve Asi Playlist 9", url: "https://www.youtube.com/playlist?list=PL6zgwFYM9ohsNgLBSl5lh5oKX1vlAzbWD" },
-        { name: "Enerjik ve Asi Playlist 10", url: "https://open.spotify.com/playlist/37i9dQZF1DX48TTZL62Yht" },
-        { name: "Enerjik ve Asi Playlist 11", url: "https://www.youtube.com/playlist?list=PLS9D4C7_jRhKPqreYZ31Iq2KliQLJzJBE" },
-        { name: "Enerjik ve Asi Playlist 12", url: "https://open.spotify.com/playlist/37i9dQZF1DX2pSTOxoPbx9" },
-        { name: "Enerjik ve Asi Playlist 13", url: "https://www.youtube.com/playlist?list=PLH1qWzdK7E2wcvBcn7c9_KjT-wA2TEo04" },
-        { name: "Enerjik ve Asi Playlist 14", url: "https://open.spotify.com/playlist/37i9dQZF1DX0BcQWzuB7ZO" },
-        { name: "Enerjik ve Asi Playlist 15", url: "https://www.youtube.com/playlist?list=PLc7zglT3GhrXBHL6Av7zWoD4SJ0fJkuJe" },
-        { name: "Enerjik ve Asi Playlist 16", url: "https://open.spotify.com/playlist/37i9dQZF1DX1M2HVMnR2tk" },
-        { name: "Enerjik ve Asi Playlist 17", url: "https://www.youtube.com/playlist?list=PLm3om6b4-Rk2bT5WgXmuwyR1-hClIv13s" },
-        { name: "Enerjik ve Asi Playlist 18", url: "https://open.spotify.com/playlist/37i9dQZF1DWUQScBTGDY19" },
-        { name: "Enerjik ve Asi Playlist 19", url: "https://www.youtube.com/playlist?list=PLqPFnzULqAUHCWczwSraCjMKD8pRKxjDe" },
-        { name: "Enerjik ve Asi Playlist 20", url: "https://open.spotify.com/playlist/37i9dQZF1DX7KNKjOK0o75" }
-      ]
-    };
+  <main id="main">
 
-    
-    const lastIndexes = {
-      happy: -1,
-      sad: -1,
-      calm: -1,
-      energetic: -1,
-      romantic: -1,
-      angry: -1,
-    };
+    <!-- ======= Portfolio Details Section ======= -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
 
-    
-    const keywords = {
-      happy: ["mutlu", "sevinçli", "neşeli", "iyi", "keyifli", "güzel", "harika", "şen", "hoş",
-              "coşkulu", "memnun", "lerz", "şımartılmış", "neşelendim", "karnaval", "eğlenceli", "şenlikli", "güler yüzlü", "parlak", "ışıldayan"],
-      sad: ["üzgün", "hüzünlü", "mutsuz", "yalnız", "acılı", "kederli", "kırık", "yorgun", "kötü", "moralim bozuk",
-            "sıkılmış", "umutsuz", "karamsar", "ağlamaklı", "hastalıklı", "kasıntılı", "kırgın", "mahzun", "bitkin", "hüzün"],
-      calm: ["rahat", "sakin", "huzurlu", "dingin", "sessiz", "meditasyon", "dinlendirici", "huzur",
-             "serin", "yumuşak", "sükunetli", "hafif", "barışçıl", "melankolik", "temiz", "durgun", "hafif", "dengeli", "az", "köpüksüz"],
-      energetic: ["enerjik", "coşkulu", "dinamik", "hareketli", "heyecanlı", "hadimli", "kıtılı", "canlı", "hareket", "yaşayan",
-                  "taze", "atılgan", "ışıklı", "hızlı", "parlak", "etkili", "kıvrak", "güçlü", "titrek", "diri"],
-      romantic: ["aşık", "romantik", "sevgi", "sevgili", "kalp", "tutku", "duygusal", "özel", "hatıra", "nazik",
-                 "güzel", "özlem", "samimi", "büyülü", "tatlı", "duygu yüklü", "masum", "hassas", "nazlı", "duygulandıran"],
-      angry: ["kızgın", "öfke", "sinirli", "hiddetli", "tartışma", "kavga", "öfke patlaması", "sinir", "öfkelendim",
-              "öfke tutsaklığı", "tahrik", "huysuz", "yırtıcı", "kızan", "öfkelendiren", "gergin", "ısrarcı", "hamle", "kavgacı", "azgın"]
-    };
+        <div class="row gy-4">
 
-    
-    function detectMood(text) {
-      const t = text.toLowerCase();
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
 
-      for (const mood in keywords) {
-        for (const word of keywords[mood]) {
-          if (t.includes(word)) {
-            return mood;
-          }
-        }
-      }
-      
-      return "calm";
-    }
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/araba1.png" alt="">
+                </div>
 
-    submitBtn.addEventListener('click', () => {
-      const userText = moodInput.value.trim();
-      if (!userText) {
-        resultDiv.style.display = "block";
-        resultDiv.textContent = "Lütfen önce bir duygu metni giriniz.";
-        return;
-      }
-      const mood = detectMood(userText);
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/araba2.png" alt="">
+                </div>
 
-      
-      lastIndexes[mood]++;
-      if (lastIndexes[mood] >= playlists[mood].length) {
-        lastIndexes[mood] = 0;
-      }
-      const selectedPlaylist = playlists[mood][lastIndexes[mood]];
+                
 
-      resultDiv.style.display = "block";
-      resultDiv.innerHTML =
-        `<p>Algılanan duygu: <strong>${mood.charAt(0).toUpperCase() + mood.slice(1)}</strong></p>
-         <p>Senin için seçilen müzik listesi:</p>
-         <a href="${selectedPlaylist.url}" target="_blank" rel="noopener" class="link">${selectedPlaylist.name}</a>`;
-    });
-  </script>
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: 3D Game Develop</li>
+                <li><strong>Car Drift Game</strong>: I made a 3D drifting game that can be played on all devices.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/kanal.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/kanal2.png" alt="">
+                </div>
+
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: Adobe After Effects</li>
+                <li><strong>Intro</strong>: I created a youtube channel introduction video with Adobe after effects.You can download and watch the video as mp4 by clicking the yellow button below.</li>
+              </ul>
+              <a href="https://dosya.co/8horf3ni1uup/kanal.mp4.html" target=_blank>kanal.mp4 - 3.1 MB</a>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/iskelet1.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/iskelet2.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/iskelet3.png" alt="">
+                </div>
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: BLENDER</li>
+                <li><strong>3D Character Design</strong>: Game character design with BLENDER.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/kk.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/kk2.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/kk3.png" alt="">
+                </div>
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: BLENDER</li>
+                <li><strong>3D Character Design</strong>: Game character design with BLENDER.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/dn1.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/dn2.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/dn3.png" alt="">
+                </div>
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: BLENDER</li>
+                <li><strong>3D Character Design</strong>: Game character design with BLENDER.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/jant1.jpg" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/jant2.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/jant3.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/jant4.jpg" alt="">
+                </div>
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: SOLIDWORKS</li>
+                <li><strong>Static strain</strong>: Car rim static strain measurement with SOLIDWORKS</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/tren1.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/tren2.png" alt="">
+                </div>
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: SOLIDWORKS</li>
+                <li><strong>Static strain</strong>: Train wheel stress and durability measurement with SOLIDWORKS</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/solidmengene.png" alt="">
+                </div>
+
+             
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: SOLIDWORKS</li>
+                <li><strong>Drawing and Assembly</strong>: SOLIDWORKS vise drawing and assembly</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/1.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/2.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/3.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/4.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/5.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/6.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/7.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/8.jpeg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/9.jpeg" alt="">
+                </div>
+
+             
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: SOLIDWORKS</li>
+                <li><strong>Drawing and Assembly</strong>: SOLIDWORKS part drawing and assembly</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/plc1.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/plc2.png" alt="">
+                </div>
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: PLC</li>
+                <li><strong>PLC</strong>: I made water tank control with PLC.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/qr.png" alt="">
+                </div>
+
+                
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: QR CODE GENERATOR</li>
+                <li><strong>AI</strong>: Generates qr code in a simple way.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/b5.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/b1.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/b2.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/b3.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/b4.png" alt="">
+                </div>
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: BRAIN TUMOR DETECTOR AI</li>
+                <li><strong>Machine Learning</strong>: It classifies the images introduced through machine learning into folders with or without tumors.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c12.png" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c2.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c3.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c4.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c5.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c6.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c7.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c8.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c9.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c10.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c11.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/c1.png" alt="">
+                </div>
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: CAT DOG DETECTOR AI</li>
+                <li><strong>Machine Learning</strong>: It tries to distinguish between cat and dog images by machine learning.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/yapayzekafiltre.png" alt="">
+                </div>
+
+                
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: AI FILTER PYTHON</li>
+                <li><strong>AI Filter Python</strong>: Removes corrupted images for better results during machine learning.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/py1.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/py2.png" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/py3.png" alt="">
+                </div>
+
+                
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: AI PYTHON</li>
+                <li><strong>AI Python</strong>: Creates an energy consumption graph by entering the data received from the sensor, takes a screenshot of this graph and closes the application.</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+     <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper">
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="assets/img/portfolio/Sicaklik.png" alt="">
+                   </div>
+
+                  <div class="swiper-slide">
+                  <img src="assets/img/portfolio/ar.png" alt="">
+                     </div>
+
+                    <div class="swiper-slide">
+                  <img src="assets/img/portfolio/Nem.png" alt="">
+                       </div>
+
+                    <div class="swiper-slide">
+                  <img src="assets/img/portfolio/motordevri.png" alt="">
+                       </div>
+
+                      <div class="swiper-slide">
+                  <img src="assets/img/portfolio/son.png" alt="">
+                         </div>
+
+                      <div class="swiper-slide">
+                  <img src="assets/img/portfolio/sonuc1.png" alt="">
+                         </div>
+
+                        <div class="swiper-slide">
+                  <img src="assets/img/portfolio/sonuc2.png" alt="">
+                           </div>
+
+                          <div class="swiper-slide">
+                  <img src="assets/img/portfolio/süre.png" alt="">
+                             </div>
+
+                            <div class="swiper-slide">
+                  <img src="assets/img/portfolio/kurallar.png" alt="">
+                               
+
+                              
+                </div>
+
+                
+                
+                
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: MATLAB</li>
+                <li><strong>Matlab</strong>: Irrigation system with Matlab</li>
+              </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+
+  </main><!-- End #main -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
 </body>
-</html>
 
+</html>
